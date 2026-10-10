@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrailLens - Challenge Dashboard</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #22c55e;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 20px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #fff;
+            font-size: 1rem;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+        .trail-list {
+            margin-top: 30px;
+        }
+        .trail-card {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent);
+        }
+        .trail-card h3 {
+            margin-bottom: 5px;
+            color: #f1f5f9;
+        }
+        .trail-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>TrailLens 🚀</h1>
+        <p>Challenge Live Tracker & Explorer</p>
+    </header>
+
+    <div class="container">
+        <div class="form-group">
+            <label for="trailName">Trail / Location Name</label>
+            <input type="text" id="trailName" placeholder="e.g., Mountain View Peak">
+        </div>
+        <div class="form-group">
+            <label for="trailDesc">Description / Notes</label>
+            <textarea id="trailDesc" rows="3" placeholder="Add details about the path, weather, or checkpoints..."></textarea>
+        </div>
+        <button onclick="addTrail()">Add Trail Entry</button>
+
+        <div class="trail-list" id="trailList">
+            <div class="empty-state">No trails added yet. Start adding your checkpoints above!</div>
+        </div>
+    </div>
+
+    <script>
+        function addTrail() {
+            const name = document.getElementById('trailName').value.trim();
+            const desc = document.getElementById('trailDesc').value.trim();
+            const listContainer = document.getElementById('trailList');
+
+            if(!name || !desc) {
+                alert('Please fill in both fields!');
+                return;
+            }
+
+            // Remove empty state message if it's the first item
+            if(listContainer.querySelector('.empty-state')) {
+                listContainer.innerHTML = '';
+            }
+
+            const card = document.createElement('div');
+            card.className = 'trail-card';
+            card.innerHTML = `
+                <h3>📍 ${escapeHtml(name)}</h3>
+                <p>${escapeHtml(desc)}</p>
+            `;
+
+            listContainer.prepend(card);
+
+            // Clear inputs
+            document.getElementById('trailName').value = '';
+            document.getElementById('trailDesc').value = '';
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+  </html>
+  
